@@ -47,7 +47,6 @@ def main(page: ft.Page):
                         [
                             ft.ElevatedButton('Удалить бота', width=160, height=50, on_click=delete_bot),
                             dd_delete_bot
-                            # TODO выбор бота
                         ], alignment=ft.MainAxisAlignment.CENTER
                     )
                 ]
