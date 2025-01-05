@@ -21,12 +21,12 @@ class Text2ImageAPI:
             'X-Secret': f'Secret {secret_key}',
         }
 
-    def get_model(self):
+    def get_model(self) -> int:
         response = requests.get(self.URL + 'key/api/v1/models', headers=self.AUTH_HEADERS)
         data = response.json()
         return data[0]['id']
 
-    def generate(self, prompt, model, images=1, width=1024, height=1024):
+    def generate(self, prompt: str, model: int, images: int = 1, width: int = 1024, height: int = 1024) -> str:
         styles = ['KANDINSKY', 'UHD', 'ANIME', 'DEFAULT']
         params = {
             "type": "GENERATE",
@@ -47,7 +47,7 @@ class Text2ImageAPI:
         data = response.json()
         return data['uuid']
 
-    def check_generation(self, request_id, attempts=10, delay=30):
+    def check_generation(self, request_id: str, attempts: int = 10, delay: int = 30) -> None | list[str]:
         while attempts > 0:
             response = requests.get(self.URL + 'key/api/v1/text2image/status/' + request_id, headers=self.AUTH_HEADERS)
             data = response.json()
@@ -60,11 +60,11 @@ class Text2ImageAPI:
 # Вызываемая функция для генерации
 def generate_image(request, number, num_dir):
     queue.put(request)
+
     if not os.path.isdir(f'images/ImageBot{num_dir}'):
         os.makedirs(f'images/ImageBot{num_dir}', exist_ok=True)
 
-    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', 'api',
-                        'secret')
+    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', 'api','secret')
     model_id = api.get_model()
     uuid = api.generate(f"{queue.get()}", model_id)
     images = api.check_generation(uuid)

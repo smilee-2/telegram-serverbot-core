@@ -3,7 +3,7 @@ from modules.telegram_module import TelegramBot
 from modules import db_bots as db
 
 
-def main(page: ft.Page):
+def main(page: ft.Page) -> None:
     # Настройки окна
     page.title = "CoreBot"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
@@ -15,7 +15,7 @@ def main(page: ft.Page):
     page.window.maximizable = False
 
     # Страница с запуском ботов
-    def page_home(e):
+    def page_home(e) -> None:
         page.clean()
         page.add(
             start_generate_btn,
@@ -24,7 +24,7 @@ def main(page: ft.Page):
         page.update()
 
     # Страница с созданием нового бота
-    def page_settings(e):
+    def page_settings(e) -> None:
         page.clean()
         page.add(
             field_bots,
@@ -33,7 +33,7 @@ def main(page: ft.Page):
         page.update()
 
     # Страница со всеми ботами
-    def page_bots(e):
+    def page_bots(e) -> None:
         page.clean()
         dd_delete_bot.options = [ft.dropdown.Option(str(idx)) for idx in range(1, len(db.get_all_bots()) + 1)]
         db_table_bots.rows = [ft.DataRow(cells=[ft.DataCell(ft.Text(word)) for word in lines.split('|')]) for lines in
@@ -55,7 +55,7 @@ def main(page: ft.Page):
         page.update()
 
     # Удаляет ботов из таблицы
-    def delete_bot(e):
+    def delete_bot(e) -> None:
         try:
             db.delete_bot(int(dd_delete_bot.value) - 1)
             dd_delete_bot.options = [ft.dropdown.Option(str(idx)) for idx in range(1, len(db.get_all_bots()) + 1)]
@@ -67,7 +67,7 @@ def main(page: ft.Page):
             page.open(dlg_error_delete_bot)
 
     # Запускает run функцию для запуском ботов
-    def start(e):
+    def start(e) -> None:
         start_generate_btn.disabled = True
         stop_bot_btn.disabled = False
         page.update()
@@ -75,7 +75,7 @@ def main(page: ft.Page):
         print("боты запущены")
 
     #Останавливает потоки для генерация изображений
-    def stop(e):
+    def stop(e) -> None:
         start_generate_btn.disabled = False
         stop_bot_btn.disabled = True
         page.update()
@@ -83,7 +83,7 @@ def main(page: ft.Page):
         print("боты остановлены")
 
     # Запускает ботов в разных потоках
-    def run_bots(e):
+    def run_bots(e) -> None:
         bots = db.get_all_bots()
         for i in bots:
             bot = i.split("|")
@@ -93,11 +93,11 @@ def main(page: ft.Page):
             except:
                 page.open(dlg_error_start_bots)
 
-    def stopped_bots(e):
+    def stopped_bots(e) -> None:
         [instance.stop_event_func() for instance in TelegramBot.instance_list]
 
     # Функция для navigation_bar для переключения между страницами
-    def navigation(page_idx: int):
+    def navigation(page_idx: int) -> None:
         if page_idx == 0:
             page_home(None)
         elif page_idx == 1:
@@ -106,7 +106,7 @@ def main(page: ft.Page):
             page_bots(None)
 
     # Функция сохранения бота в базу даннх
-    def save_bot(e):
+    def save_bot(e) -> None:
         try:
             db.bots_database(
                 bot_id_field.value,

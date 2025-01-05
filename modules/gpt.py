@@ -8,7 +8,7 @@ from queue import Queue
 q = Queue()
 
 # Отправка запроса в gpt. Если нейросеть не ответит, спросят следующую по списку
-def request(msg):
+def request(msg) -> str:
     q.put(msg)
     g4f.debug.logging = True
     g4f.debug.version_check = False

@@ -18,6 +18,8 @@ add_word - добавит слово в конец БД
 delete_last_word - удалит последнее слово из БД
 """
 class ListWord:
+
+
     def __init__(self, number: int):
 
         self.number = number
@@ -26,12 +28,14 @@ class ListWord:
         with open(f'{self._name}', 'a', encoding='utf-8'):
             pass
 
-    def return_list_words(self):
+
+    def return_list_words(self)  -> list[str]:
         with open(f'{self._name}', 'r', encoding='utf-8') as file:
             word = file.readlines()
         return word
 
-    def choice_random_word(self):
+
+    def choice_random_word(self) -> int:
         with open(f'{self._name}', 'r', encoding='utf-8') as file:
             word = file.readlines()
             if len(word) < 1:
@@ -66,7 +70,7 @@ class ListWord:
         return word[response_data['result']['random']['data'][0] - 1]
 
 
-    def add_word(self, word: str):
+    def add_word(self, word: str) -> None:
         with open(f'{self._name}', 'a+', encoding='utf-8') as file:
             file.seek(0)
             words = file.readlines()
@@ -76,7 +80,7 @@ class ListWord:
             file.writelines(word + '\n')
 
 
-    def delete_last_word(self):
+    def delete_last_word(self) -> None:
         with open(f'{self._name}', 'r', encoding='utf-8') as f:
             lines = f.readlines()
             lines = lines[:-1]
